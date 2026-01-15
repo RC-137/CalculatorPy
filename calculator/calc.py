@@ -1,4 +1,5 @@
 import webview
+import tkinter as tk
 
 class CalculatorAPI:
     def __init__(self):
@@ -6,7 +7,12 @@ class CalculatorAPI:
         self.lastPoint = False
 
     def press(self, value):
-        # Clear button
+        total_chars = len(self.expression.replace('\n', ''))
+        max_chars = 50
+        if total_chars >= max_chars:
+            self.expression = "Can't enter more than 50 characters"
+            return self.expression
+
         if value == "C":
             self.expression = "0"
             return self.expression
@@ -51,14 +57,20 @@ class CalculatorAPI:
           self.expression += value
         return self.expression
 
-
-
 if __name__ == "__main__":
+    root = tk.Tk()
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    root.destroy()
+    win_width = int(screen_width / 3)
+    win_height = int(screen_height / 1.3)
+
     webview.create_window(
         "Calculator",
-        "calc.html", 
+        "calc.html",
         js_api=CalculatorAPI(),
-        width=350,
-        height=500
+        width=win_width,
+        height=win_height,
+        resizable=True  
     )
     webview.start()

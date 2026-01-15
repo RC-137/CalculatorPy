@@ -31,13 +31,18 @@
         
         #display {
             width: 100%;
-            height: 50px;
-            text-align: right;
+            height: 110px;
             font-size: 24px;
             padding: 10px;
-            margin-bottom: 15px;
             border-radius: 8px;
             border: 1px solid #ccc;
+            resize: none;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            line-height: 1.3em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 1px;
         }
         
         .buttons {
@@ -69,7 +74,7 @@
 
 <body>
     <div class="calculator">
-        <input type="text" id="display" value="0" readonly>
+        <textarea id="display" rows="2" readonly></textarea>
         <div class="buttons">
             <button onclick="press('7')">7</button>
             <button onclick="press('8')">8</button>
@@ -102,6 +107,18 @@
                 document.getElementById("display").value = result;
             }
         }
+        document.addEventListener('keydown', async(event) => {
+            let key = event.key;
+
+            if (key === 'Enter') key = '=';
+            else if (key.toLowerCase() === 'c') key = 'C';
+
+
+            const validKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '.', '=', 'C'];
+            if (!validKeys.includes(key)) return;
+
+            await press(key);
+        });
     </script>
 </body>
 
